@@ -108,8 +108,44 @@ def display_all_contacts():
 
 # Delete a contact method
 def delete_contact():
-    #TODO
-    pass
+    """
+    Displays the contact with the same firstname as the one entered by the user.
+    """
+    clear_terminal()
+    wanted_firstname = input("Enter the firstname of the contact you want to delete: ")
+    
+    clear_terminal()
+    connexion = sqlite3.connect("contacts.db")
+    cur = connexion.cursor()
+    contacts = cur.execute("SELECT * FROM Contact WHERE firstname = ?;", (wanted_firstname,)).fetchall()
+    
+    if len(contacts) == 0:
+        print("No contact with the firstname " + wanted_firstname + " was found.", end=" ")
+    elif len(contacts) == 1:
+        cur.execute("DELETE FROM Contact WHERE firstname = ?;", (wanted_firstname,))
+        connexion.commit()
+        print("The contact with the firstname \"" + wanted_firstname + "\" has been deleted.", end=" ")
+    else :
+        print("Multiple contacts with the firstname " + wanted_firstname + " were found:\n")
+        for i in range(len(contacts)):
+            print("\t" + str(i) + ". " + contacts[i][1] + " | " + contacts[i][2] +
+                    " | " + contacts[i][3] + " | " + contacts[i][4] + " | " + 
+                    contacts[i][5] + " | " + contacts[i][6] + "\n")
+        
+        choice = input("Enter the number of the contact you want to delete: ")
+        while not choice.isdigit() or int(choice) < 0 or int(choice) >= len(contacts):
+            print("Please enter a valid choice.")
+        
+        cur.execute("DELETE FROM Contact WHERE id = ?;", contacts[int(choice)][0])
+        connexion.commit()
+        
+        #FIXME ValueError: parameters are of unsupported type
+        
+        print("The contact " + choice + " has been deleted.", end=" ")
+            
+    connexion.close()
+    wait_for_input()
+    
 
 # Delete all conctacts method
 def delete_all_contacts():
