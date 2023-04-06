@@ -206,6 +206,26 @@ def exit_program():
     print("See you soon!")
     exit()
 
+def create_database():
+    """
+    Creates the sqlite database.
+    """
+    query = "CREATE TABLE \"Contact\" ( \
+                \"Id\"	INTEGER, \
+                \"firstname\"	TEXT, \
+                \"lastname\"	TEXT, \
+                \"phone_number\"	TEXT, \
+                \"email_address\"	TEXT, \
+                \"address\"	TEXT, \
+                \"birthday\"	TEXT, \
+                PRIMARY KEY(\"Id\" AUTOINCREMENT) \
+            );"
+    con = sqlite3.connect("contacts.db")
+    cur = con.cursor()
+    cur.execute(query)
+    con.commit()
+    con.close()
+
 def choice_manager(choice):
     """
     Calls the right function given the user's choice.
@@ -230,6 +250,8 @@ def choice_manager(choice):
             exit_program()
 
 def main_menu():
+    if (not os.path.exists("contacts.db")):
+        create_database()
     while True:
         clear_terminal()
         print("Welcome to PyContacts!\n\n")
