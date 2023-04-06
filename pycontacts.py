@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import json
 
 def clear_terminal():
     """
@@ -11,7 +12,7 @@ def wait_for_input():
     """
     Waits for the user to press enter.
     """
-    print("Press [Enter] to continue...") 
+    print("Press [Enter] to continue...", end="") 
     input()
     
     
@@ -166,6 +167,37 @@ def delete_all_contacts():
     print("All your contacts have been deleted.", end=" ")
     wait_for_input()
 
+def data_dump():
+    """
+    Creates a JSON backup of the contacts in the database.
+    """
+    clear_terminal()
+    print("Connection to the database...")
+    connexion = sqlite3.connect("contacts.db")
+    print("Connected to the database.")
+    cur = connexion.cursor()
+    print("Creating the JSON array...")
+    json_array = []
+    print("Retrieving the contacts...")
+    for contact in cur.execute("SELECT * FROM Contact;"):
+        dict = {"firstname": contact[1], "lastname": contact[2], 
+                "phone_number": contact[3], "email_address": contact[4], 
+                "address": contact[5], "birthday": contact[6]}
+        json_array.append(dict)
+        print("Added contact " + contact[1] + " " + contact[2] + ".")
+    print("Contacts retrieved.")
+    print("Adding the JSON array to the file...")
+    with open("contacts.json", "w") as file:
+        json.dump(json_array, file)
+    print("JSON array added to the file.")
+    print("Data dumped.")
+    print("Closing the connection to the database...")
+    connexion.close()
+    print("Connection closed.")
+    print("\nData dumped successfully.", end=" ")
+    wait_for_input()
+    
+
 # Exit method
 def exit_program():
     """
@@ -193,6 +225,8 @@ def choice_manager(choice):
         case "5":
             delete_all_contacts()
         case "6":
+            data_dump()
+        case "7":
             exit_program()
 
 def main_menu():
@@ -204,11 +238,12 @@ def main_menu():
         print("3. Display all contacts")
         print("4. Delete a contact")
         print("5. Reset your contacts")
-        print("6. Exit")
+        print("6. Data dump")
+        print("7. Exit")
         choice = input("\nWhat do you wish to do? ")
         
-        while choice not in ["1","2","3","4","5","6"]:
-            choice = input("Please, choose a correct number (1,2,3,4,5 or 6): ")
+        while choice not in ["1","2","3","4","5","6","7"]:
+            choice = input("Please, choose a correct number (1,2,3,4,5,6 or 7): ")
     
         choice_manager(choice)
 

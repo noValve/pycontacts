@@ -1,0 +1,3 @@
+# Ignore the files containing contacts data
+contacts.db
+contacts.json
