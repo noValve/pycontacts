@@ -197,6 +197,40 @@ def data_dump():
     print("\nData dumped successfully.", end=" ")
     wait_for_input()
     
+def data_import():
+    """
+    Adds contacts from a JSON file to the database.
+    """
+    clear_terminal()
+    print("Reading the JSON file...")
+    with open('contacts.json', 'r') as file:
+        data = json.load(file)
+    print("JSON file read.")
+    print("Checking the data...")
+    for contact in data:
+        if len(contact) != 6:
+            print("The data is not valid.")
+            print("Data import failed.", end=" ")
+            wait_for_input()
+            return
+    print("Data checked.")
+    print("Connection to the database...")
+    connexion = sqlite3.connect("contacts.db")
+    print("Connected to the database.")
+    cur = connexion.cursor()
+    for contact in data:
+        print("Adding contact " + contact["firstname"] + " " + contact["lastname"] + 
+              "...")
+        cur.execute("INSERT INTO Contact (firstname, lastname, phone_number," 
+                    + "email_address, address, birthday) VALUES (?, ?, ?, ?, ?, ?);"
+                    , (contact["firstname"], contact["lastname"], 
+                       contact["phone_number"], contact["email_address"], 
+                       contact["address"], contact["birthday"]))
+        connexion.commit()
+    print("Contacts added.")
+    print("Closing the connection to the database...")
+    connexion.close()
+    wait_for_input()
 
 # Exit method
 def exit_program():
@@ -247,6 +281,8 @@ def choice_manager(choice):
         case "6":
             data_dump()
         case "7":
+            data_import()
+        case "8":
             exit_program()
 
 def main_menu():
@@ -261,11 +297,12 @@ def main_menu():
         print("4. Delete a contact")
         print("5. Reset your contacts")
         print("6. Data dump")
-        print("7. Exit")
+        print("7. Data import")
+        print("8. Exit")
         choice = input("\nWhat do you wish to do? ")
         
-        while choice not in ["1","2","3","4","5","6","7"]:
-            choice = input("Please, choose a correct number (1,2,3,4,5,6 or 7): ")
+        while choice not in [str(i) for i in range(1,9)]:
+            choice = input("Please, choose a correct number (1,2,3,4,5,6,7 or 8): ")
     
         choice_manager(choice)
 
