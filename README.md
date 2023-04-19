@@ -1,5 +1,5 @@
 # 👤 PyContacts  
-PyContacts is a very simple and straight-forward contact directory.  
+PyContacts is a very simple and straightforward contact directory.  
 
 ## Installation 
 ```bash
