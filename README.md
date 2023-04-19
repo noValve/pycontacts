@@ -1,7 +1,5 @@
 # 👤 PyContacts  
-PyContacts is a very simple and straight-forward contact directory.
-
-<br>  
+PyContacts is a very simple and straight-forward contact directory.  
 
 ## Installation 
 ```bash
@@ -10,8 +8,6 @@ git clone git@github.com:noValve/pycontacts.git
 # Install the required libraries
 make init
 ```
-
-<br>
 
 ## Usage  
 ```bash
@@ -30,8 +26,6 @@ After that, a list of options shows up:
 - 6 - To make a back-up of your contacts (as a json file).
 - 7 - To import contacts from a json file.
 - 8 - To exit the program.
-
-<br>
 
 ## License
 ⚖️ [MIT](https://choosealicense.com/licenses/mit/)
