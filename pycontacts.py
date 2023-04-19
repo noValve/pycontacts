@@ -15,8 +15,6 @@ def wait_for_input():
     print("Press [Enter] to continue...", end="") 
     input()
     
-    
-
 def add_new_contact():
     """
     Allows the user to create a new contact.
@@ -120,13 +118,13 @@ def delete_contact():
     cur = connexion.cursor()
     contacts = cur.execute("SELECT * FROM Contact WHERE firstname = ?;", (wanted_firstname,)).fetchall()
     
-    if len(contacts) == 0:
+    if len(contacts) == 0: # if no contact was found
         print("No contact with the firstname " + wanted_firstname + " was found.", end=" ")
-    elif len(contacts) == 1:
+    elif len(contacts) == 1: # if only one contact was found
         cur.execute("DELETE FROM Contact WHERE firstname = ?;", (wanted_firstname,))
         connexion.commit()
         print("The contact with the firstname \"" + wanted_firstname + "\" has been deleted.", end=" ")
-    else :
+    else : # if multiple contacts were found
         print("Multiple contacts with the firstname " + wanted_firstname + " were found:\n")
         for i in range(len(contacts)):
             print("\t" + str(i) + ". " + contacts[i][1] + " | " + contacts[i][2] +
@@ -135,19 +133,16 @@ def delete_contact():
         
         choice = input("Enter the number of the contact you want to delete: ")
         while not choice.isdigit() or int(choice) < 0 or int(choice) >= len(contacts):
-            print("Please enter a valid choice.")
+            choice = input("Please enter a valid choice.")
         
-        cur.execute("DELETE FROM Contact WHERE id = ?;", contacts[int(choice)][0])
+        cur.execute("DELETE FROM Contact WHERE id = ?;", (contacts[int(choice)][0],))
         connexion.commit()
-        
-        #FIXME ValueError: parameters are of unsupported type
-        
+                
         print("The contact " + choice + " has been deleted.", end=" ")
             
     connexion.close()
     wait_for_input()
     
-
 # Delete all conctacts method
 def delete_all_contacts():
     """
