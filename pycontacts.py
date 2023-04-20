@@ -68,7 +68,6 @@ def add_info(info, query):
     info[query] = input("Enter the " + query.replace("_", " ") + ": ")
     return info
 
-# Display method
 def display_contact():
     """
     Displays the contacts with the same firstname as the one entered by the user.
@@ -87,8 +86,6 @@ def display_contact():
     connexion.close()
     wait_for_input()
     
-
-# Display for a precise letter method
 def display_all_contacts():
     """
     Displays all the contacts present in the database.
@@ -105,7 +102,6 @@ def display_all_contacts():
     connexion.close()
     wait_for_input()
 
-# Delete a contact method
 def delete_contact():
     """
     Displays the contact with the same firstname as the one entered by the user.
@@ -143,7 +139,6 @@ def delete_contact():
     connexion.close()
     wait_for_input()
     
-# Delete all conctacts method
 def delete_all_contacts():
     """
     Deletes all the contacts in the database.
@@ -227,7 +222,6 @@ def data_import():
     connexion.close()
     wait_for_input()
 
-# Exit method
 def exit_program():
     """
     Displays a goodbye message and exits the program.
@@ -303,7 +297,3 @@ def main_menu():
 
 if __name__ == "__main__":
     main_menu()
-    
-
-    
-    
